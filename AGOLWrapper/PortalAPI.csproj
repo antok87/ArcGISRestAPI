@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{BA77660E-F5DC-4B3B-BB0F-2D6D3C7390CA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EsriUK.NETPortalAPI</RootNamespace>
+    <AssemblyName>.NETPortalAPI</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\JSON.NET\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="PortalConnection.cs" />
+    <Compile Include="Helpers\JsonParser.cs" />
+    <Compile Include="Helpers\StatusManager.cs" />
+    <Compile Include="Helpers\FormData.cs" />
+    <Compile Include="Helpers\HttpPostRequest.cs" />
+    <Compile Include="Helpers\StreamFormData.cs" />
+    <Compile Include="Helpers\TextFormData.cs" />
+    <Compile Include="Parameters\RequestBase.cs" />
+    <Compile Include="Parameters\RequestCommon.cs" />
+    <Compile Include="Parameters\RequestGroup.cs" />
+    <Compile Include="Parameters\RequestItem.cs" />
+    <Compile Include="Parameters\RequestPortal.cs" />
+    <Compile Include="Parameters\RequestUser.cs" />
+    <Compile Include="REST\CheckServiceName.cs" />
+    <Compile Include="REST\PublishItem.cs" />
+    <Compile Include="REST\DeleteFolder.cs" />
+    <Compile Include="REST\DeleteItem.cs" />
+    <Compile Include="SharedObjects\AGSResponse.cs" />
+    <Compile Include="SharedObjects\AGSService.cs" />
+    <Compile Include="SharedObjects\Extent.cs" />
+    <Compile Include="SharedObjects\LayerInfo.cs" />
+    <Compile Include="SharedObjects\PublishParameters.cs" />
+    <Compile Include="SharedObjects\SpatialReference.cs" />
+    <Compile Include="SharedObjects\PublishParametersShapefile.cs" />
+    <Compile Include="SharedObjects\PublishParametersCSV.cs" />
+    <Compile Include="SharedObjects\Status.cs" />
+    <Compile Include="SharedObjects\Error.cs" />
+    <Compile Include="SharedObjects\Folder.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="REST\AddItem.cs" />
+    <Compile Include="REST\GenerateToken.cs" />
+    <Compile Include="REST\CreateFolder.cs" />
+    <Compile Include="REST\RESTBase.cs" />
+    <Compile Include="Helpers\ArcGISServerClient.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
