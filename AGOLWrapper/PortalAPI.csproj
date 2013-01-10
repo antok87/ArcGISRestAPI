@@ -67,10 +67,11 @@
     <Compile Include="Parameters\RequestItem.cs" />
     <Compile Include="Parameters\RequestPortal.cs" />
     <Compile Include="Parameters\RequestUser.cs" />
-    <Compile Include="REST\CheckServiceName.cs" />
-    <Compile Include="REST\PublishItem.cs" />
-    <Compile Include="REST\DeleteFolder.cs" />
-    <Compile Include="REST\DeleteItem.cs" />
+    <Compile Include="REST\Portals\Portal\CheckServiceName.cs" />
+    <Compile Include="REST\Content\UserContentClient.cs" />
+    <Compile Include="REST\Content\UserContent\PublishItem.cs" />
+    <Compile Include="REST\Content\UserContent\DeleteFolder.cs" />
+    <Compile Include="REST\Content\UserContent\DeleteItem.cs" />
     <Compile Include="SharedObjects\AGSResponse.cs" />
     <Compile Include="SharedObjects\AGSService.cs" />
     <Compile Include="SharedObjects\Extent.cs" />
@@ -83,13 +84,15 @@
     <Compile Include="SharedObjects\Error.cs" />
     <Compile Include="SharedObjects\Folder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="REST\AddItem.cs" />
+    <Compile Include="REST\Content\UserContent\AddItem.cs" />
     <Compile Include="REST\GenerateToken.cs" />
-    <Compile Include="REST\CreateFolder.cs" />
+    <Compile Include="REST\Content\UserContent\CreateFolder.cs" />
     <Compile Include="REST\RESTBase.cs" />
     <Compile Include="Helpers\ArcGISServerClient.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="REST\Community\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

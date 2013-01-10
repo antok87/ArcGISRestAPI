@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 using EsriUK.NETPortalAPI;
 using EsriUK.NETPortalAPI.Parameters;
 using EsriUK.NETPortalAPI.Helpers;
-using EsriUK.NETPortalAPI.REST;
+using EsriUK.NETPortalAPI.REST.Content.UserContent;
+using EsriUK.NETPortalAPI.REST.Content;
 
 /*
  * This demo takes a series of command-line arguments that are URLs to ArcGIS Server
@@ -52,14 +53,15 @@ namespace CreateItems
                         continue;
                 }
 
-                AddItem addItem = new AddItem(portalConn);
-                addItem.request.url = arg;
-                addItem.request.type = type;
-                addItem.request.async = true;
-                addItem.request.title = name;
-                addItem.request.tags = "index";
+                AddItem.Request request = new AddItem.Request();
+                request.url = arg;
+                request.type = type;
+                request.async = true;
+                request.title = name;
+                request.tags = "index";
 
-                addItem.makeRequest();
+                UserContentClient client = new UserContentClient(portalConn);
+                client.AddItem(request);
 
                 Console.WriteLine("Indexing service with ArcGIS Online\n");
 

@@ -13,7 +13,7 @@ using Newtonsoft.Json;
 using System.IO;
 using System.Net;
 
-namespace EsriUK.NETPortalAPI.REST
+namespace EsriUK.NETPortalAPI.REST.Content.UserContent
 {
     public delegate void AddItemCompletedEventHandler(object sender, StatusCompletedEventArgs e);
 
@@ -73,6 +73,7 @@ namespace EsriUK.NETPortalAPI.REST
                     this.request.folderId += "/";
                 }
 
+                //TODO: config URL parts
                 Uri url = new Uri(string.Format("http://www.arcgis.com/sharing/content/users/{0}/{1}addItem?f=json&token={2}", portalConn.username, this.request.folderId, portalConn.token));
                 HttpPostRequest request = new HttpPostRequest(url);
 

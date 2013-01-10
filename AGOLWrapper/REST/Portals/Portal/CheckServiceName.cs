@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using EsriUK.NETPortalAPI.Parameters;
 
-namespace EsriUK.NETPortalAPI.REST
+namespace EsriUK.NETPortalAPI.REST.Portals.Portal
 {
     public class CheckServiceName : RESTBase
     {

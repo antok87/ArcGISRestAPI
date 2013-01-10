@@ -11,7 +11,7 @@ using System.IO;
 using System.Net;
 using Newtonsoft.Json;
 
-namespace EsriUK.NETPortalAPI.REST
+namespace EsriUK.NETPortalAPI.REST.Content.UserContent
 {
     public class PublishItem : RESTBase
     {
@@ -48,6 +48,7 @@ namespace EsriUK.NETPortalAPI.REST
 
         public override Object makeRequest()
         {
+            //TODO: config URL parts
             Uri url = new Uri(string.Format("http://www.arcgis.com/sharing/content/users/{0}/publish?f=json&token={1}", portalConn.username, portalConn.token));
             HttpPostRequest request = new HttpPostRequest(url);
 

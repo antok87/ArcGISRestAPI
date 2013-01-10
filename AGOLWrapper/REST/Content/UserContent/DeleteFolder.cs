@@ -13,15 +13,15 @@ using EsriUK.NETPortalAPI.Helpers;
 
 using Newtonsoft.Json;
 
-namespace EsriUK.NETPortalAPI.REST
+namespace EsriUK.NETPortalAPI.REST.Content.UserContent
 {
-    public class DeleteItem : RESTBase
+    public class DeleteFolder : RESTBase
     {
         public new Request request { get; set; }
         public new Response response { get; private set; }
         public new PortalConnection portalConn { get; set; }
 
-        public DeleteItem(PortalConnection portalConn)
+        public DeleteFolder(PortalConnection portalConn)
         {
             this.request = new Request();
             this.response = null;
@@ -31,17 +31,18 @@ namespace EsriUK.NETPortalAPI.REST
         public new class Response
         {
             public bool success { get; set; }
-            public string itemId { get; set; }
+            public Folder folder { get; set; }
         }
 
         public new class Request : RequestCommon
         {
-            public string itemId;
+            public string id { get; set; }
         }
 
         public override Object makeRequest()
         {
-            Uri url = new Uri(string.Format("http://www.arcgis.com/sharing/content/users/{0}/items/{1}/delete?f=json&token={2}", portalConn.username, this.request.itemId, portalConn.token));
+            //TODO: config URL parts
+            Uri url = new Uri(string.Format("http://www.arcgis.com/sharing/content/users/{0}/{1}/delete?f=json&token={2}", portalConn.username, this.request.id, portalConn.token));
             HttpPostRequest request = new HttpPostRequest(url);
             request.AddFields(this.request.getParameters());
             HttpWebResponse response = request.PostData();

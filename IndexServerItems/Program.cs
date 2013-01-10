@@ -5,10 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 using EsriUK.NETPortalAPI;
-using EsriUK.NETPortalAPI.REST;
+using EsriUK.NETPortalAPI.REST.Content.UserContent;
 using EsriUK.NETPortalAPI.Parameters;
 using EsriUK.NETPortalAPI.Helpers;
 using EsriUK.NETPortalAPI.SharedObjects;
+using EsriUK.NETPortalAPI.REST.Content;
 
 /*
  * This demo scans an ArcGIS Server instance and indexes all its contents
@@ -44,34 +45,31 @@ namespace IndexServerItems
             Console.WriteLine("Deleting...");
 
             // Delete all the indexed content
+            UserContentClient client = new UserContentClient(portalConn);
             foreach (string folder in folderIds)
             {
-                DeleteFolder df = new DeleteFolder(portalConn);
-                df.request.id = folder;
-                df.makeRequest();
-                if (df.response.success)
+                DeleteFolder.Response response = client.DeleteFolder(folder);
+                if (response.success)
                 {
-                    Console.WriteLine(string.Format("Folder {0} {1}", df.response.folder.title, df.response.folder.id));
+                    Console.WriteLine(string.Format("Folder {0} {1}", response.folder.title, response.folder.id));
                 }
                 else
                 {
-                    Console.WriteLine(string.Format("Error {0}", df.response.folder.title));
-                    Console.WriteLine(string.Format("{0}\n", df.response.folder.id));
+                    Console.WriteLine(string.Format("Error {0}", response.folder.title));
+                    Console.WriteLine(string.Format("{0}\n", response.folder.id));
                 }
             }
 
             foreach (string item in itemIds)
             {
-                DeleteItem di = new DeleteItem(portalConn);
-                di.request.itemId = item;
-                di.makeRequest();
-                if (di.response.success)
+                DeleteItem.Response response = client.DeleteItem(item);
+                if (response.success)
                 {
-                    Console.WriteLine(string.Format("Item {0}", di.response.itemId));
+                    Console.WriteLine(string.Format("Item {0}", response.itemId));
                 }
                 else
                 {
-                    Console.WriteLine(string.Format("Error {0}\n", di.response.itemId));
+                    Console.WriteLine(string.Format("Error {0}\n", response.itemId));
                 }
             }
 
@@ -89,24 +87,21 @@ namespace IndexServerItems
         {
             ArcGISServerClient AGSClient = new ArcGISServerClient();
             AGSResponse agsResponse = AGSClient.QueryArcGISServer(server, directory);
+            UserContentClient client = new UserContentClient(portalConn);
             foreach (string folder in agsResponse.folders)
             {
                 Console.WriteLine(string.Format("====================\n\nCreating folder: {0}", folder));
-                CreateFolder cf = new CreateFolder(portalConn);
-                cf.request.title = folder;
-                cf.makeRequest();
-                folderIds.Add(cf.response.folder.id);
+                CreateFolder.Response response = client.CreateFolder(folder);
+                folderIds.Add(response.folder.id);
                 
                 // Recursively index all content
                 Console.WriteLine(string.Format("Recursing {0} for services\n\n", folder));
-                QueryArcGISServer(server, folder, cf.response.folder.id);
+                QueryArcGISServer(server, folder, response.folder.id);
             }
 
             foreach (AGSService service in agsResponse.services)
             {
                 Console.WriteLine(string.Format("Indexing service {0}", service.name));
-
-                AddItem ai = new AddItem(portalConn);
 
                 // TODO: create a proper lookup table to do this
                 string type = String.Empty;
@@ -137,24 +132,27 @@ namespace IndexServerItems
 
                 if (!server.EndsWith("/")) server += "/";
 
-                ai.request.url = String.Format("{0}{1}/{2}", server, service.name, service.type);
-                ai.request.type = type;
-                ai.request.async = true;
-                ai.request.title = directory == String.Empty ? service.name : service.name.Substring(directory.Length + 1);
-                ai.request.tags = "bulkindex";
+                AddItem.Request request = new AddItem.Request();
+                request.url = String.Format("{0}{1}/{2}", server, service.name, service.type);
+                request.type = type;
+                request.async = true;
+                request.title = directory == String.Empty ? service.name : service.name.Substring(directory.Length + 1);
+                request.tags = "bulkindex";
+
+                AddItem.Response response;
 
                 if (parentDirectory == null)
                 {
-                    ai.makeRequest();
-                    itemIds.Add(ai.response.id);
+                    response = client.AddItem(request);
+                    itemIds.Add(response.id);
                 }
                 else
                 {
-                    ai.request.folderId = parentDirectory;
-                    ai.makeRequest();
+                    request.folderId = parentDirectory;
+                    response = client.AddItem(request);
                 }
 
-                Console.WriteLine(string.Format("Completed {0}\n", ai.response.id));
+                Console.WriteLine(string.Format("Completed {0}\n", response.id));
             }
         }
 

@@ -12,7 +12,7 @@ using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace EsriUK.NETPortalAPI.REST
+namespace EsriUK.NETPortalAPI.REST.Content.UserContent
 {
     public class CreateFolder : RESTBase
     {
@@ -41,6 +41,7 @@ namespace EsriUK.NETPortalAPI.REST
 
         public override Object makeRequest()
         {
+            //TODO: config URL parts (http)
             Uri url = new Uri("http://" + portalConn.portalDomainName + "/sharing/rest/content/users/" + portalConn.username + "/createFolder?f=json");
             HttpPostRequest request = new HttpPostRequest(url);
             request.AddFields(this.request.getParameters());

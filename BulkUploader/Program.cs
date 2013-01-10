@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 using EsriUK.NETPortalAPI;
 using EsriUK.NETPortalAPI.Parameters;
 using EsriUK.NETPortalAPI.Helpers;
-using EsriUK.NETPortalAPI.REST;
+using EsriUK.NETPortalAPI.REST.Content.UserContent;
+using EsriUK.NETPortalAPI.REST.Content;
 
 /*
  * This demo takes a series of command-line arguments that are paths to compressed
@@ -29,25 +30,28 @@ namespace BulkUploader
             foreach (string arg in args)
             {
                 Console.WriteLine("Uploading shapefile");
-                AddItem ai = new AddItem(portalConn);
-                ai.request.type = "Shapefile";
-                ai.request.file = arg;
-                ai.request.filename = arg.Substring(arg.LastIndexOf('\\') + 1);
-                ai.request.async = true;
-                ai.request.title = ai.request.filename.Substring(0, ai.request.filename.Length - 4);
-                ai.request.tags = "bulkupload";
+
+                AddItem.Request request = new AddItem.Request();
+                request.type = "Shapefile";
+                request.file = arg;
+                request.filename = arg.Substring(arg.LastIndexOf('\\') + 1);
+                request.async = true;
+                request.title = request.filename.Substring(0, request.filename.Length - 4);
+                request.tags = "bulkupload";
 
                 // Listen for an Add Item completed event
                 // When the event is handled, a Publish Item is triggered
                 ai.AddItemCompletedEvent += new AddItemCompletedEventHandler(AddItemCompletedEventHandler);
-                ai.makeRequest();
-                if (ai.response.success)
+
+                UserContentClient client = new UserContentClient(portalConn);
+                AddItem.Response response = client.AddItem(request);
+                if (response.success)
                 {
                     Console.WriteLine(string.Format("{0}\nid {1}\nPreparing item for publishing...\n", "Item ", ai.response.id));
                 }
                 else
                 {
-                    Console.WriteLine(string.Format("Upload failed {0}\n", ai.response.id));
+                    Console.WriteLine(string.Format("Upload failed {0}\n", response.id));
                 }
             }
             //press Esc to quit
@@ -64,23 +68,25 @@ namespace BulkUploader
             if (e.response.status == "completed")
             {
                 Console.WriteLine(string.Format("Publishing Feature Service {0}\n", e.response.itemId));
-                PublishItem pi = new PublishItem(portalConn);
 
-                pi.request.publishParameters.name = itemId;
-                pi.request.filetype = "shapefile";
-                pi.request.token = portalConn.token;
-                pi.request.itemId = itemId;
-                pi.request.publishParameters.description = "This is a file upload";
-                PublishItem.Response[] jsonPublishResponse = pi.makeRequest() as PublishItem.Response[];
+                PublishItem.Request request = new PublishItem.Request();
+                request.publishParameters.name = itemId;
+                request.filetype = "shapefile";
+                request.token = portalConn.token;
+                request.itemId = itemId;
+                request.publishParameters.description = "This is a file upload";
 
-                foreach (PublishItem.Response serviceResponse in jsonPublishResponse)
+                UserContentClient client = new UserContentClient(portalConn);
+                PublishItem.Response[] response = client.PublishItem(request);
+
+                foreach (PublishItem.Response serviceResponse in response)
                 {
                     Console.WriteLine(string.Format("{0} published", serviceResponse.type));
                     Console.WriteLine(string.Format("{0}", serviceResponse.serviceItemId));
                     Console.WriteLine(string.Format("{0}\n", serviceResponse.serviceURL));
                 }
 
-                if (jsonPublishResponse.Length == 0)
+                if (response.Length == 0)
                 {
                     Console.WriteLine(string.Format("Service publishing failed\n"));
                 }
