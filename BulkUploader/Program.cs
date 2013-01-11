@@ -41,13 +41,12 @@ namespace BulkUploader
 
                 // Listen for an Add Item completed event
                 // When the event is handled, a Publish Item is triggered
-                ai.AddItemCompletedEvent += new AddItemCompletedEventHandler(AddItemCompletedEventHandler);
-
                 UserContentClient client = new UserContentClient(portalConn);
+                client.AddItemCompletedEvent += new AddItemCompletedEventHandler(AddItemCompletedEventHandler);                
                 AddItem.Response response = client.AddItem(request);
                 if (response.success)
                 {
-                    Console.WriteLine(string.Format("{0}\nid {1}\nPreparing item for publishing...\n", "Item ", ai.response.id));
+                    Console.WriteLine(string.Format("{0}\nid {1}\nPreparing item for publishing...\n", "Item ", response.id));
                 }
                 else
                 {

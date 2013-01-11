@@ -24,7 +24,6 @@ namespace EsriUK.NETPortalAPI.REST.Content.UserContent
             this.request = new Request();
             // Instantiate the publish parameters
             // TODO: Make this more general so that CSV files, etc, can be published
-            this.request.publishParameters = new PublishParametersShapefile();
             this.response = null;
             this.portalConn = portalConn;
         }
@@ -39,6 +38,10 @@ namespace EsriUK.NETPortalAPI.REST.Content.UserContent
 
         public new class Request : RequestCommon
         {
+            public Request()
+            {
+                this.publishParameters = new PublishParametersShapefile();
+            }
             public string itemId { get; set; }
             public string filetype { get; set; }
             // TODO: Make this more general so that CSV files, etc, can be published

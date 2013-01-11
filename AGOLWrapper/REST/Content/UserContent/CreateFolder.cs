@@ -42,7 +42,7 @@ namespace EsriUK.NETPortalAPI.REST.Content.UserContent
         public override Object makeRequest()
         {
             //TODO: config URL parts (http)
-            Uri url = new Uri("http://" + portalConn.portalDomainName + "/sharing/rest/content/users/" + portalConn.username + "/createFolder?f=json");
+            Uri url = new Uri("http://" + portalConn.portalDomainName + "/sharing/rest/content/users/" + portalConn.username + "/createFolder?f=json&token=" + portalConn.token);
             HttpPostRequest request = new HttpPostRequest(url);
             request.AddFields(this.request.getParameters());
             HttpWebResponse response = request.PostData();

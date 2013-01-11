@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EsriUK.NETPortalAPI.REST.Content.UserContent;
+using EsriUK.NETPortalAPI.Helpers;
 
 namespace EsriUK.NETPortalAPI.REST.Content
 {
+    //public delegate void AddItemCompletedEventHandler(object sender, StatusCompletedEventArgs e);
+
     public class UserContentClient
     {
         public UserContentClient(PortalConnection portalConn)
@@ -17,10 +20,20 @@ namespace EsriUK.NETPortalAPI.REST.Content
         public AddItem.Response AddItem(AddItem.Request request)
         {
             AddItem addItem = new AddItem(portalConn);
+            addItem.AddItemCompletedEvent += new AddItemCompletedEventHandler(AddItemCompletedEventHandler);
             addItem.request = request;
             addItem.makeRequest();
             return addItem.response;
         }
+        private void AddItemCompletedEventHandler(object sender, StatusCompletedEventArgs e)
+        {
+            // TODO: Error-handling
+            if (e.response.status == "completed")
+            {
+                AddItemCompletedEvent(this, e);
+            }
+        }
+        public event AddItemCompletedEventHandler AddItemCompletedEvent;
 
         public CreateFolder.Response CreateFolder(string title)
         {
