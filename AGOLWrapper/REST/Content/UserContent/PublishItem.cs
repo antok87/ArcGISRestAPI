@@ -19,11 +19,9 @@ namespace EsriUK.NETPortalAPI.REST.Content.UserContent
         public new Response response { get; private set; }
         public new PortalConnection portalConn { get; set; }
 
-        public PublishItem(PortalConnection portalConn)
+        public PublishItem(PortalConnection portalConn, string type)
         {
-            this.request = new Request();
-            // Instantiate the publish parameters
-            // TODO: Make this more general so that CSV files, etc, can be published
+            this.request = new Request(type);
             this.response = null;
             this.portalConn = portalConn;
         }
@@ -38,14 +36,21 @@ namespace EsriUK.NETPortalAPI.REST.Content.UserContent
 
         public new class Request : RequestCommon
         {
-            public Request()
+            public Request(string type)
             {
-                this.publishParameters = new PublishParametersShapefile();
+                if (type == "csv")
+                {
+                    this.publishParameters = new PublishParametersCSV();
+                }
+                else
+                {
+                    this.publishParameters = new PublishParametersShapefile();
+                }
             }
             public string itemId { get; set; }
             public string filetype { get; set; }
             // TODO: Make this more general so that CSV files, etc, can be published
-            public PublishParametersShapefile publishParameters { get; set; }
+            public PublishParameters publishParameters { get; set; }
             public string outputType { get; set; }
         }
 

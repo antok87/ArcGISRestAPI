@@ -8,6 +8,10 @@ namespace EsriUK.NETPortalAPI.SharedObjects
 {
     public class SpatialReference
     {
+        public SpatialReference(int wkid)
+        {
+            this.wkid = wkid;
+        }
         public int wkid { get; set; }
     }
 }

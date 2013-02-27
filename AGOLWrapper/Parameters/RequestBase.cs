@@ -36,12 +36,35 @@ namespace EsriUK.NETPortalAPI.Parameters
 
                 if (firstValue != null)
                 {
-                    output.Add(key, stripQuotationMarks(JsonConvert.SerializeObject(firstValue)));
+                    JsonSerializerSettings settings = new JsonSerializerSettings();
+                    settings.NullValueHandling = NullValueHandling.Ignore;
+                    output.Add(key, stripQuotationMarks(JsonConvert.SerializeObject(firstValue, settings)));
                 }
             }
             return output;
         }
+/*
+        private void recurseParameters(string key)
+        {
+            PropertyInfo[] propInfos = key.GetType().GetProperties();
+            if (propInfos.Length == 0)
+            {
+                return;
+            }
+            foreach (PropertyInfo propInfo in propInfos)
+            {
+                object firstValue = propInfo.GetValue(key);
+                if (String.IsNullOrEmpty(firstValue.ToString()))
+                {
 
+                }
+                else
+                {
+                    recurseParameters(propInfo.Name);
+                }
+            }
+        }
+*/
         /*
          * This method removes leading and trailing quotation marks from the input string,
          * e.g. "42" becomes 42

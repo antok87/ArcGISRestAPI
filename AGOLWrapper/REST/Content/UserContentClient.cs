@@ -78,9 +78,9 @@ namespace EsriUK.NETPortalAPI.REST.Content
             return di.response;
         }
 
-        public PublishItem.Response[] PublishItem(PublishItem.Request request)
+        public PublishItem.Response[] PublishItem(PublishItem.Request request, string type)
         {
-            PublishItem pi = new PublishItem(portalConn);
+            PublishItem pi = new PublishItem(portalConn, type);
             pi.request = request;
             return pi.makeRequest() as PublishItem.Response[];
         }

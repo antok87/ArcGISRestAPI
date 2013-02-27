@@ -67,6 +67,8 @@
     <Compile Include="Parameters\RequestItem.cs" />
     <Compile Include="Parameters\RequestPortal.cs" />
     <Compile Include="Parameters\RequestUser.cs" />
+    <Compile Include="REST\Content\FeatureOperationsClient.cs" />
+    <Compile Include="REST\Content\FeatureOperations\Analyze.cs" />
     <Compile Include="REST\Portals\Portal\CheckServiceName.cs" />
     <Compile Include="REST\Content\UserContentClient.cs" />
     <Compile Include="REST\Content\UserContent\PublishItem.cs" />

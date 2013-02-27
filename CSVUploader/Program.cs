@@ -3,46 +3,40 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 using EsriUK.NETPortalAPI;
-using EsriUK.NETPortalAPI.Parameters;
 using EsriUK.NETPortalAPI.Helpers;
-using EsriUK.NETPortalAPI.REST.Content.UserContent;
 using EsriUK.NETPortalAPI.REST.Content;
+using EsriUK.NETPortalAPI.REST.Content.FeatureOperations;
+using EsriUK.NETPortalAPI.REST.Content.UserContent;
+using EsriUK.NETPortalAPI.SharedObjects;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
-/*
- * This demo takes a series of command-line arguments that are paths to compressed
- * shapefiles (.zip files).
- * 
- * Each shapefile is added to ArcGIS Online and published as a feature service
- */ 
-
-namespace BulkUploader
+namespace CSVUploader
 {
     class Program
     {
         static PortalConnection portalConn;
-
         static void Main(string[] args)
         {
             portalConn = new PortalConnection();
 
             foreach (string arg in args)
             {
-                Console.WriteLine("Uploading shapefile");
+                Console.WriteLine("Uploading CSV");
 
                 AddItem.Request request = new AddItem.Request();
-                request.type = "Shapefile";
+                request.type = "CSV";
                 request.file = arg;
                 request.filename = arg.Substring(arg.LastIndexOf('\\') + 1);
                 request.async = true;
                 request.title = request.filename.Substring(0, request.filename.Length - 4);
-                request.tags = "bulkupload";
+                request.tags = "csvupload";
 
                 // Listen for an Add Item completed event
                 // When the event is handled, a Publish Item is triggered
                 UserContentClient client = new UserContentClient(portalConn);
-                client.AddItemCompletedEvent += new AddItemCompletedEventHandler(AddItemCompletedEventHandler);                
+                client.AddItemCompletedEvent += new AddItemCompletedEventHandler(AddItemCompletedEventHandler);
                 AddItem.Response response = client.AddItem(request);
                 if (response.success)
                 {
@@ -66,26 +60,38 @@ namespace BulkUploader
             string itemId = e.response.itemId;
             if (e.response.status == "completed")
             {
+                Console.WriteLine(string.Format("Analyzing CSV {0}\n", e.response.itemId));
+                FeatureOperationsClient foc = new FeatureOperationsClient(portalConn);
+                Analyze.Request request = new Analyze.Request();
+                request.format = "json";
+                request.itemId = e.response.itemId;
+                request.type = "csv";
+                Analyze.Response response = foc.Analyze(request);
+
                 Console.WriteLine(string.Format("Publishing Feature Service {0}\n", e.response.itemId));
 
-                PublishItem.Request request = new PublishItem.Request("shapefile");
-                request.publishParameters.name = itemId;
-                request.filetype = "shapefile";
-                request.token = portalConn.token;
-                request.itemId = itemId;
-                request.publishParameters.description = "This is a file upload";
+                PublishParametersCSV ppcsv = JsonConvert.DeserializeObject<PublishParametersCSV>(response.publishParameters.ToString());
+                //workaround: name returned is invalid on publish!
+                ppcsv.name = DateTime.Now.Ticks.ToString();
+
+                PublishItem.Request request2 = new PublishItem.Request("csv");
+                request2.publishParameters.name = itemId;
+                request2.filetype = "csv";
+                request2.token = portalConn.token;
+                request2.itemId = itemId;
+                request2.publishParameters = ppcsv;
 
                 UserContentClient client = new UserContentClient(portalConn);
-                PublishItem.Response[] response = client.PublishItem(request, "shapefile");
+                PublishItem.Response[] response2 = client.PublishItem(request2, "csv");
 
-                foreach (PublishItem.Response serviceResponse in response)
+                foreach (PublishItem.Response serviceResponse in response2)
                 {
                     Console.WriteLine(string.Format("{0} published", serviceResponse.type));
                     Console.WriteLine(string.Format("{0}", serviceResponse.serviceItemId));
                     Console.WriteLine(string.Format("{0}\n", serviceResponse.serviceURL));
                 }
 
-                if (response.Length == 0)
+                if (response2.Length == 0)
                 {
                     Console.WriteLine(string.Format("Service publishing failed\n"));
                 }
