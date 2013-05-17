@@ -11,8 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IndexServerItems", "IndexSe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSVUploader", "CSVUploader\CSVUploader.csproj", "{EC7C3549-560B-47FE-8809-A1203B7FD1BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExportItem", "ExportItem\ExportItem.csproj", "{5831B7B1-7C77-467C-8064-A747D0C258C5}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
