@@ -54,7 +54,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AGOLWrapper\PortalAPI.csproj">
+    <ProjectReference Include="..\AGOLWrapper\RestAPI.csproj">
       <Project>{ba77660e-f5dc-4b3b-bb0f-2d6d3c7390ca}</Project>
       <Name>PortalAPI</Name>
     </ProjectReference>

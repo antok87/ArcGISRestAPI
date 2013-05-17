@@ -69,7 +69,6 @@
     <Compile Include="Parameters\RequestUser.cs" />
     <Compile Include="REST\Content\FeatureOperationsClient.cs" />
     <Compile Include="REST\Content\FeatureOperations\Analyze.cs" />
-    <Compile Include="REST\Content\UserContent\ExportItem.cs" />
     <Compile Include="REST\Portals\Portal\CheckServiceName.cs" />
     <Compile Include="REST\Content\UserContentClient.cs" />
     <Compile Include="REST\Content\UserContent\PublishItem.cs" />
@@ -77,8 +76,6 @@
     <Compile Include="REST\Content\UserContent\DeleteItem.cs" />
     <Compile Include="SharedObjects\AGSResponse.cs" />
     <Compile Include="SharedObjects\AGSService.cs" />
-    <Compile Include="SharedObjects\ExportLayerInfo.cs" />
-    <Compile Include="SharedObjects\ExportParameters.cs" />
     <Compile Include="SharedObjects\Extent.cs" />
     <Compile Include="SharedObjects\LayerInfo.cs" />
     <Compile Include="SharedObjects\PublishParameters.cs" />
