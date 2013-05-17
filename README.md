@@ -1,7 +1,7 @@
-PythonAGOLTools
+ArcGISRestAPI
 ===============
 
-Demo scripts and productivity enhancements for ArcGIS Online using Python
+A .NET library for interfacing with the [ArcGIS REST API](http://www.arcgis.com/apidocs/rest/) - for developing with ArcGIS Online and Portal for ArcGIS
 
 
 ## Instructions (Getting Started)
